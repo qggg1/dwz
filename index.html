@@ -1,79 +1,70 @@
+<!DOCTYPE html>
 <html>
-<head>
-<title></title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0 , maximum-scale=1.0, user-scalable=0">
-<meta content="telephone=no" name="format-detection">
-<meta name="apple-touch-fullscreen" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<script src="//cdn.taoyn.cc/fangfeng.js"></script>
-<script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script><script>
-	String.prototype.replaceAll = function(s1, s2) {
-		return this.replace(new RegExp(s1, "gm"), s2)
-	};
-	function getQueryVariable(variable) {
-		var query = window.location.search.substring(1);
-		var vars = query.split("&");
-		for (var i = 0; i < vars.length; i++) {
-			var pair = vars[i].split("=");
-			if (pair[0] == variable) {
-				return pair[1]
-			}
-		}
-		return (false)
-	}
-	var data = getQueryVariable("d");
-	if (data) {
-		var ojbk = false;
-		try {
-			data = data.replaceAll("%2B", "+").replaceAll("%3D", "=");
-			var d = atob(data);
-			var ds = d.split("|");
-			var ffname = ds[0];
-			var daili = ds[1];
-			var longurl = ds[2];
-			var gotoDomain = function() {
-				if (!ojbk) {
-					$.ajax({
-							type: "get",
-							async: false,
-							url: "https://wx.baoyunjuproperty.com/api/auth/domain?daili=" + daili + "&ffname=" + ffname,
-							dataType: "jsonp",
-							success: function(domain) {
-							if (!ojbk) {
-								ojbk = true;
-								var gotoUrl = "https://" + domain + longurl;
-								$('#webFrame').attr('src',  gotoUrl);
-								//window.location.replace(gotoUrl)
-							}
-						},
-						error: function() {
-							if (!ojbk) {
-								ojbk = true;
-								console.log("获取最新域名失败")
-							}
-						}
-					})
-				}
-			};
-			gotoDomain();
-			setInterval(gotoDomain, 2000)
-		} catch(err) {
-			ojbk = true;
-			console.log("发生错误了")
-		}
-	} else {
-		$("#msg").html("无效的数据")
-	};
+    <head>
+        <meta charset="utf-8">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+        <title></title>
+    </head>
+    <body>
+<h4 id="msg">加载中...</h4><script src="https://cdn.staticfile.org/jquery/3.4.0/jquery.min.js"></script><script>
+    String.prototype.replaceAll = function(s1, s2) {
+        return this.replace(new RegExp(s1, "gm"), s2)
+    };
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1]
+            }
+        }
+        return (false)
+    }
+    var data = getQueryVariable("d");
+    if (data) {
+        var ojbk = false;
+        try {
+            data = data.replaceAll("%2B", "+").replaceAll("%3D", "=");
+            var d = atob(data);
+            var ds = d.split("|");
+            var ffname = ds[0];
+            var daili = ds[1];
+            var longurl = ds[2];
+            var gotoDomain = function() {
+                if (!ojbk) {
+                    $.ajax({
+                        type: "get",
+                        async: false,
+                        url: "https://ql.mohuyoupin.com/api/ds/domain?daili=" + daili + "&ffname=" + ffname,
+                        dataType: "jsonp",
+                        success: function(domain) {
+                            if (!ojbk) {
+                                ojbk = true;
+                                var gotoUrl = "http://" + domain + longurl;
+                                window.location.replace(gotoUrl)
+                            }
+                        },
+                        error: function() {
+                            if (!ojbk) {
+                                ojbk = true;
+                                $("#msg").html("获取最新域名失败")
+                            }
+                        }
+                    })
+                }
+            };
+            gotoDomain();
+            setInterval(gotoDomain, 2000)
+        } catch(err) {
+            ojbk = true;
+            $("#msg").html("发生错误了");
+            alert(err)
+        }
+    } else {
+        $("#msg").html("无效的数据")
+    };
 </script>
-</head>
-
-	<frameset cols="0,100%" frameborder="NO" border="0" framespacing="0">
-		<frame src="about:blank" scrolling="NO" noresize="">
-		<frame id="webFrame">
-		<noframes></noframes>
-	</frameset>
-
-
-	</html>
+    </body>
+</html>
